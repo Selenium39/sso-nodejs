@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>登录</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script type="text/javascript" src="/javascripts/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery.cookie.js"></script>
+  <script>
+    $(function () {
+      if ($.cookie('token')) {
+        $("form").css('display','none')
+        let originUrl = $("[name='originUrl']").val();
+        $.ajax({
+          url: '/validate?originUrl=' + originUrl,
+          method: 'get',
+          success: function (data) {
+            $(location).attr('href', originUrl + "?tk=" + data);
+          }
+        })
+      }
+    })
+  </script>
+</head>
+
+<body>
+  <form method="POST" action="/login">
+    <input type="hidden" name="originUrl" value=<%=originUrl%> />
+    <p>账号: <input type="text" name="username" /></p>
+    <p>密码: <input type="password" name="password" /></p>
+    <p style="margin-left: 80px;"><button>提交</button></p>
+  </form>
+</body>
+
+</html>
